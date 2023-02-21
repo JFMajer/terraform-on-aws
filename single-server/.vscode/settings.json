@@ -1,5 +1,0 @@
-{
-    "yaml.schemas": {
-        "https://json.schemastore.org/github-workflow.json": "file:///home/kuba/Desktop/terraform-on-aws/single-server/.github/workflows/deploy.yml"
-    }
-}
