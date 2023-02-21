@@ -10,6 +10,9 @@ on:
       - '!**/README.md'
       - '**/deploy_single_server.yml'
   
+env:
+  WORKING_DIR: single-server
+
 jobs:
   deploy:
     permissions:
@@ -37,18 +40,18 @@ jobs:
           AWS_REGION: ${{ vars.AWS_REGION }}
           DYNAMO_TABLE: ${{ secrets.DYNAMO_TABLE }}
       - name: Terraform Init
-        working-directory: single-server
+        working-directory: ${{ env.WORKING_DIR }}
         run: terraform init
       - name: Terraform Plan
-        working-directory: single-server
+        working-directory: ${{ env.WORKING_DIR }}
         run: terraform plan -out=plan.out
       - name: Terraform Apply
-        working-directory: single-server
+        working-directory: ${{ env.WORKING_DIR }}
         run: terraform apply plan.out
       - name: Terraform Destroy
-        working-directory: single-server
+        working-directory: ${{ env.WORKING_DIR }}
         run: terraform destroy -auto-approve
-        if: contains(github.event.head_commit.message, 'Destroy')
+        if: contains(github.event.head_commit.message, 'Destroy') || github.ref == 'refs/heads/destroy'
   show_debug_info:
     runs-on: ubuntu-latest
     steps:
