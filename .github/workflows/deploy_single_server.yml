@@ -37,8 +37,11 @@ jobs:
           AWS_REGION: ${{ vars.AWS_REGION }}
           DYNAMO_TABLE: ${{ secrets.DYNAMO_TABLE }}
       - name: Terraform Init
+        working-directory: single-server
         run: terraform init
       - name: Terraform Plan
+        working-directory: single-server
         run: terraform plan -out=plan.out
       - name: Terraform Apply
+        working-directory: single-server
         run: terraform apply plan.out
