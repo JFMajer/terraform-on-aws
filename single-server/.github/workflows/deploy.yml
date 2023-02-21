@@ -5,8 +5,9 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - 'README.md'
+    paths:
+      - 'single-server/**'
+      - '!**/README.md'
   
 jobs:
   prepare:
@@ -19,15 +20,19 @@ jobs:
       - run: echo "💡 The ${{ github.repository }} repository is being cloned to the runner."
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
-      - name: Terraform Init
-        run: terraform init
-      - name: Terraform Plan
-        run: terraform plan -out=plan.out
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
       - uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-session-name: ${{ secrets.AWS_ROLE_SESSION_NAME }}
           aws-region: ${{ vars.AWS_REGION }}
+      - uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["**/*.tf"]'
+        env:
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          DYNAMO_TABLE: ${{ secrets.DYNAMO_TABLE }}
+      - name: Terraform Init
+        run: terraform init
+      - name: Terraform Plan
+        run: terraform plan -out=plan.out
