@@ -41,13 +41,11 @@ resource "aws_launch_configuration" "asg_lc" {
   spot_price = "0.0108"
   security_groups = [aws_security_group.asg_sg.id]
 
-  user_data = <<-EOF
-    #!/bin/bash
-    echo "Hello, World" >> index.html
-    echo "RDS Address: ${data.terraform_remote_state.mysql_rds.outputs.address}" >> index.html
-    echo "RDS Port: ${data.terraform_remote_state.mysql_rds.outputs.port}" >> index.html
-    nohup busybox httpd -f -p ${var.server_port} &
-    EOF
+  user_data = templatefile("user-data.sh", {
+    server_port = var.server_port,
+    db_address = data.terraform_remote_state.mysql_rds.outputs.address,
+    db_port = data.terraform_remote_state.mysql_rds.outputs.port,
+  })
 
     lifecycle {
         create_before_destroy = true
