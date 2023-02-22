@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - '**/configurable-wen-server/**'
+      - '**/configurable-web-server/**'
       - '!**/README.md'
       - '**/configurable_web_server.yml'
       - '**/destroy.txt'
@@ -56,6 +56,9 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
         run: terraform destroy -auto-approve
         if: contains(github.event.head_commit.message, 'Destroy') || github.ref == 'refs/heads/destroy'
+      - name: Terraform Output
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform output -json
   show_debug_info:
     runs-on: ubuntu-latest
     steps:
