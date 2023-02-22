@@ -1,4 +1,4 @@
-name: Deploy Single Server using Terraform to AWS
+name: Deploy Single Web Server using Terraform to AWS
 
 on:
   workflow_dispatch:
