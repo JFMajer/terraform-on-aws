@@ -28,7 +28,7 @@ resource "aws_launch_configuration" "asg_lc" {
   image_id      = "ami-09e1162c87f73958b"
   instance_type = "t3.micro"
   spot_price = "0.0108"
-  security_groups = []
+  security_groups = [aws_security_group.asg_sg.id]
 
   user_data = <<-EOF
     #!/bin/bash
