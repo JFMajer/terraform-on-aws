@@ -9,6 +9,7 @@ on:
       - '**/single-server/**'
       - '!**/README.md'
       - '**/deploy_single_server.yml'
+      - '**/destroy.txt'
   
 env:
   WORKING_DIR: single-server
