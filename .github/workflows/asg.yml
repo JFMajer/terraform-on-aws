@@ -1,4 +1,4 @@
-name: Deploy Configurable Web Server using Terraform to AWS
+name: Deploy ASG with ALB
 
 on:
   workflow_dispatch:

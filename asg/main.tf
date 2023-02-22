@@ -27,14 +27,13 @@ resource "aws_launch_configuration" "asg_lc" {
   name_prefix   = "asg-lc-"
   image_id      = "ami-09e1162c87f73958b"
   instance_type = "t3.micro"
+  spot_price = "0.001"
 
   user_data = <<-EOF
     #!/bin/bash
     echo "Hello, World" > index.html
     nohup busybox httpd -f -p ${var.server_port} &
     EOF
-
-  user_data_replace_on_change = true
 
     lifecycle {
         create_before_destroy = true
