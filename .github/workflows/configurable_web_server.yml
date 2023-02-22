@@ -1,0 +1,62 @@
+name: Deploy Configurable Web Server using Terraform to AWS
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/configurable-wen-server/**'
+      - '!**/README.md'
+      - '**/configurable_web_server.yml'
+      - '**/destroy.txt'
+  
+env:
+  WORKING_DIR: configurable-web-server
+
+jobs:
+  deploy:
+    permissions:
+      id-token: write
+      contents: read
+    environment: dev
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - run: echo "💡 The ${{ github.repository }} repository is being cloned to the runner."
+      - uses: actions/checkout@v3
+      - name: list files
+        run: ls -la
+      - uses: hashicorp/setup-terraform@v1
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-session-name: ${{ secrets.AWS_ROLE_SESSION_NAME }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["**/*.tf"]'
+        env:
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          DYNAMO_TABLE: ${{ secrets.DYNAMO_TABLE }}
+      - name: Terraform Init
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform init
+      - name: Terraform Plan
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform plan -out=plan.out
+      - name: Terraform Apply
+        if: ${{ !contains(github.event.head_commit.message, 'Destroy') }}
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform apply plan.out
+      - name: Terraform Destroy
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform destroy -auto-approve
+        if: contains(github.event.head_commit.message, 'Destroy') || github.ref == 'refs/heads/destroy'
+  show_debug_info:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ toJSON(github.event) }}"
