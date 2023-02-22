@@ -16,7 +16,7 @@ resource "aws_db_instance" "rds_mysql" {
     identifier_prefix = "terraform-aws"
     allocated_storage = 20
     engine = "mysql"
-    instance_class = db.t3.micro
+    instance_class = "db.t3.micro"
     skip_final_snapshot = true
     db_name = "terraform_db"
 
