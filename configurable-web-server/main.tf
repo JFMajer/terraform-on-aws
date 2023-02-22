@@ -12,7 +12,7 @@ provider "aws" {
   region = "#{AWS_REGION}#"
 }
   
-resource "aws_instance" "example" {
+resource "aws_instance" "sg_web" {
   ami           = "ami-09e1162c87f73958b"
   instance_type = "t3.micro"
   vpc_security_group_ids = [aws_security_group.instance.id]
