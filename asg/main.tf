@@ -48,8 +48,8 @@ resource "aws_security_group" "asg_sg" {
 
     ingress {
         description = "HTTP"
-        from_port = 8080
-        to_port = 8080
+        from_port = var.server_port
+        to_port = var.server_port
         protocol = "tcp"
         security_groups = [aws_security_group.asg_lb_sg.id]
     }
@@ -159,20 +159,3 @@ resource "aws_lb_target_group" "asg_tg" {
     }
 }
 
-
-
-
-variable "server_port" {
-    description = "The port the web server will listen on"
-    type = number
-    default = 8080
-}
-
-output "load_balancer_dns" {
-  value = aws_lb.asg_lb.dns_name
-  description = "DNS name of the load balancer"
-}
-
-output http_url {
-  value = "http://${aws_lb.asg_lb.dns_name}"
-}
