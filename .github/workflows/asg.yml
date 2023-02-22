@@ -48,7 +48,7 @@ jobs:
       - name: Terraform Plan
         working-directory: ${{ env.WORKING_DIR }}
         run: terraform plan -out=plan.out
-        if: contains(github.event.head_commit.message, 'Destroy') || github.ref == 'refs/heads/destroy'
+        if: ${{ !contains(github.event.head_commit.message, 'Destroy') }}
       - name: Terraform Apply
         if: ${{ !contains(github.event.head_commit.message, 'Destroy') }}
         working-directory: ${{ env.WORKING_DIR }}
