@@ -66,6 +66,8 @@ jobs:
     environment: dev
     env:
       WORKING_DIR: asg/data-stores/mysql-rds
+      TF_VAR_rds_password: ${{ secrets.RDS_PASSWORD }}
+      TF_VAR_rds_username: ${{ secrets.RDS_USER }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was triggered by a ${{ github.event_name }} event."
