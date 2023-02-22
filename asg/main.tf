@@ -49,7 +49,8 @@ resource "aws_autoscaling_group" "asg" {
   launch_configuration = aws_launch_configuration.asg_lc.name
   vpc_zone_identifier = data.aws_subnets.default.ids
   target_group_arns = [aws_lb_target_group.asg_tg.arn]
-  health_check_type = "ELB" 
+  health_check_type = "ELB"
+  healthhealth_check_grace_period = 300 
 
     tag {
         key = "Name"
