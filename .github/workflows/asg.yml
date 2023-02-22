@@ -13,7 +13,6 @@ on:
   
 jobs:
   deploy-asg:
-    needs: [deploy-rds]
     permissions:
       id-token: write
       contents: read
@@ -60,6 +59,7 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
         run: terraform output -json
   deploy-rds:
+    needs: [deploy-asg]
     permissions:
       id-token: write
       contents: read
