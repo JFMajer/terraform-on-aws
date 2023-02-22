@@ -20,6 +20,9 @@ jobs:
       id-token: write
       contents: read
     environment: dev
+    env:
+      TF_VAR_rds_username: ${{ secrets.RDS_USERNAME }}
+      TF_VAR_rds_password: ${{ secrets.RDS_PASSWORD }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was triggered by a ${{ github.event_name }} event."
@@ -29,7 +32,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: list files
         run: ls -la
-      - uses: hashicorp/setup-terraform@v1
+      - uses: hashicorp/setup-terraform@v2
       - uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}

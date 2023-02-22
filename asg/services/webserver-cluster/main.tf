@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "#{S3_BUCKET}#"
-    key    = "asg/terraform.tfstate"
+    key    = "asg/services/webserver-cluster/terraform.tfstate"
     region = "#{AWS_REGION}#"
     dynamodb_table = "#{DYNAMO_TABLE}#"
     encrypt = true
@@ -23,6 +23,17 @@ data "aws_subnets" "default" {
     }
 }
 
+data "terraform_remote_state" "mysql_rds" {
+    backend = "s3"
+    config = {
+        bucket = "#{S3_BUCKET}#"
+        key = "asg/data-stores/mysql-rds/terraform.tfstate"
+        region = "#{AWS_REGION}#"
+        dynamodb_table = "#{DYNAMO_TABLE}#"
+        encrypt = true
+    }
+}
+
 resource "aws_launch_configuration" "asg_lc" {
   name_prefix   = "asg-lc-"
   image_id      = "ami-09e1162c87f73958b"
@@ -32,7 +43,9 @@ resource "aws_launch_configuration" "asg_lc" {
 
   user_data = <<-EOF
     #!/bin/bash
-    echo "Hello, World" > index.html
+    echo "Hello, World" >> index.html
+    echo "RDS Address: ${data.terraform_remote_state.mysql_rds.outputs.address}" >> index.html
+    echo "RDS Port: ${data.terraform_remote_state.mysql_rds.outputs.port}" >> index.html
     nohup busybox httpd -f -p ${var.server_port} &
     EOF
 
