@@ -28,6 +28,7 @@ resource "aws_launch_configuration" "asg_lc" {
   image_id      = "ami-09e1162c87f73958b"
   instance_type = "t3.micro"
   spot_price = "0.0108"
+  security_groups = []
 
   user_data = <<-EOF
     #!/bin/bash
@@ -37,6 +38,27 @@ resource "aws_launch_configuration" "asg_lc" {
 
     lifecycle {
         create_before_destroy = true
+    }
+}
+
+resource "aws_security_group" "asg_sg" {
+    name = "asg-sg"
+    description = "Allow HTTP traffic from load balancer"
+    vpc_id = data.aws_vpc.default.id
+
+    ingress {
+        description = "HTTP"
+        from_port = 80
+        to_port = 8080
+        protocol = "tcp"
+        security_groups = [aws_security_group.asg_lb_sg.id]
+    }
+
+    egress {
+        from_port = 0
+        to_port = 0
+        protocol = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
     }
 }
 
