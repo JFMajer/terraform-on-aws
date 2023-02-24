@@ -8,9 +8,6 @@ terraform {
   }
 }
 
-provider "aws" {
-  region = "#{AWS_REGION}#"
-}
 
 resource "aws_db_instance" "rds_mysql" {
     identifier_prefix = "terraform-aws"
