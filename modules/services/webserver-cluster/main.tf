@@ -9,17 +9,6 @@ data "aws_subnets" "default" {
     }
 }
 
-data "terraform_remote_state" "mysql_rds" {
-    backend = "s3"
-    config = {
-        bucket = "#{S3_BUCKET}#"
-        key = "asg/data-stores/mysql-rds/terraform.tfstate"
-        region = "#{AWS_REGION}#"
-        dynamodb_table = "#{DYNAMO_TABLE}#"
-        encrypt = true
-    }
-}
-
 resource "aws_launch_configuration" "asg_lc" {
   name_prefix   = "${var.cluster_name}-lc-"
   image_id      = "ami-09e1162c87f73958b"
