@@ -12,6 +12,6 @@ module "webserver_cluster" {
 module "mysql_rds" {
     source = "../modules/data-stores/mysql-rds"
     rds_suffix = var.rds_suffix
-    rds_username = "var.rds_username"
-    rds_password = "var.rds_password"
+    rds_username = var.rds_username
+    rds_password = var.rds_password
 }
