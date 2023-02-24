@@ -9,3 +9,8 @@ variable "rds_password" {
     type = string
     sensitive = true
 }
+
+variable "rds_suffix" {
+    description = "Suffix to append to the RDS instance name"
+    type        = string
+}
