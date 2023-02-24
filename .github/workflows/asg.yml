@@ -42,6 +42,8 @@ jobs:
           AWS_REGION: ${{ vars.AWS_REGION }}
           DYNAMO_TABLE: ${{ secrets.DYNAMO_TABLE }}
           ENV: ${{ vars.ENV }}
+          RDS_USER: ${{ secrets.RDS_USER }}
+          RDS_PASSWORD: ${{ secrets.RDS_PASSWORD }}
       - name: Terraform Init
         working-directory: ${{ env.WORKING_DIR }}
         run: terraform init
