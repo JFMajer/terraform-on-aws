@@ -1,5 +1,5 @@
 resource "aws_db_instance" "rds_mysql" {
-    identifier = "mysql-rds${var.rds_suffix}"
+    #identifier = "mysql-rds${var.rds_suffix}"
     allocated_storage = 20
     engine = "mysql"
     instance_class = "db.t3.micro"
