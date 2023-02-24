@@ -9,3 +9,17 @@ variable "rds_suffix" {
     type        = string
     default = "-#{ENV}#"
 }
+
+variable "rds_username" {
+    description = "The username for the RDS instance"
+    type = string
+    sensitive = true
+    default = "#{RDS_USER}#"
+}
+
+variable "rds_password" {
+    description = "The password for the RDS instance"
+    type = string
+    sensitive = true
+    default = "#{RDS_PASSWORD}#"
+}
