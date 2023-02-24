@@ -27,7 +27,7 @@ resource "aws_launch_configuration" "asg_lc" {
   spot_price = "0.0108"
   security_groups = [aws_security_group.asg_sg.id]
 
-  user_data = templatefile("user-data.sh", {
+  user_data = templatefile("${path.module}/user-data.sh", {
     server_port = var.server_port,
     db_address = var.db_address,
     db_port = var.db_port
