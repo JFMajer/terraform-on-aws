@@ -30,7 +30,7 @@ data "terraform_remote_state" "mysql_rds" {
 }
 
 resource "aws_launch_configuration" "asg_lc" {
-  name_prefix   = "asg-lc-"
+  name_prefix   = "${var.cluster_name}-lc-"
   image_id      = "ami-09e1162c87f73958b"
   instance_type = "t3.micro"
   spot_price = "0.0108"
@@ -48,7 +48,7 @@ resource "aws_launch_configuration" "asg_lc" {
 }
 
 resource "aws_security_group" "asg_sg" {
-    name = "asg-sg"
+    name = "${var.cluster_name}-tg-sg"
     description = "Allow HTTP traffic from load balancer"
     vpc_id = data.aws_vpc.default.id
 
@@ -69,7 +69,7 @@ resource "aws_security_group" "asg_sg" {
 }
 
 resource "aws_autoscaling_group" "asg" {
-  name_prefix = "asg-"
+  name_prefix = "${var.cluster_name}-asg-"
   min_size = 2
   max_size = 5
   desired_capacity = 2
@@ -87,7 +87,7 @@ resource "aws_autoscaling_group" "asg" {
 }
 
 resource "aws_lb" "asg_lb" {
-  name               = "asg-lb"
+  name               = "${var.cluster_name}-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.asg_lb_sg.id]
@@ -127,7 +127,7 @@ resource "aws_lb_listener_rule" "asg_lb_listener_rule" {
 }
 
 resource "aws_security_group" "asg_lb_sg" {
-  name        = "asg-lb-sg"
+  name        = "${var.cluster_name}-alb-sg"
   description = "Allow HTTP traffic"
   vpc_id      = data.aws_vpc.default.id
 
@@ -148,7 +148,7 @@ resource "aws_security_group" "asg_lb_sg" {
 }
 
 resource "aws_lb_target_group" "asg_tg" {
-  name     = "asg-tg"
+  name     = "${var.cluster_name}-tg"
   port     = var.server_port
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default.id
