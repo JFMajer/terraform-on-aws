@@ -5,6 +5,7 @@ resource "aws_db_instance" "rds_mysql" {
     instance_class = "db.t3.micro"
     skip_final_snapshot = true
     db_name = "terraform_db"
+    apply_immediately = true
 
     username = var.rds_username
     password = var.rds_password
