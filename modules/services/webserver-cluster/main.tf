@@ -114,21 +114,24 @@ resource "aws_security_group" "asg_lb_sg" {
   name        = "${var.cluster_name}-alb-sg"
   description = "Allow HTTP traffic"
   vpc_id      = data.aws_vpc.default.id
+}
 
-  ingress {
-    description = "HTTP"
-    from_port   = local.http_port
-    to_port     = local.http_port
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    }
+resource "aws_security_group_rule" "allow_http_to_alb" {
+    type              = "ingress"
+    security_group_id = aws_security_group.asg_lb_sg.id
+    from_port         = local.http_port
+    to_port           = local.http_port
+    protocol          = "tcp"
+    cidr_blocks       = ["0.0.0.0/0"]
+}
 
-    egress {
-        from_port = 0
-        to_port = 0
-        protocol = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+resource "aws_security_group_rule" "allow_all_outbound" {
+    type              = "egress"
+    security_group_id = aws_security_group.asg_lb_sg.id
+    from_port         = 0
+    to_port           = 0
+    protocol          = "-1"
+    cidr_blocks       = ["0.0.0.0/0"]
 }
 
 resource "aws_lb_target_group" "asg_tg" {
