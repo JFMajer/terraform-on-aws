@@ -23,3 +23,9 @@ variable "rds_password" {
     sensitive = true
     default = "#{RDS_PASSWORD}#"
 }
+
+variable "custom_tags" {
+    description = "Custom tags to add to the resources"
+    type = map(string)
+    default = {}
+}

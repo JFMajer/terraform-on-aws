@@ -1,5 +1,12 @@
 provider "aws" {
   region = "#{AWS_REGION}#"
+
+  default_tags {
+    tags = {
+      Environment = "#{ENV}#"
+      ManagedBy = "terraform"
+    }
+  }
 }
 
 module "webserver_cluster" {
@@ -7,6 +14,12 @@ module "webserver_cluster" {
     cluster_name = var.cluster_name
     db_address = module.mysql_rds.address
     db_port = module.mysql_rds.port
+
+    custom_tags = {
+        Owner = "team-foo"
+        Environment = "#{ENV}#"
+        ManagedBy = "terraform"
+    }
 }
 
 module "mysql_rds" {
