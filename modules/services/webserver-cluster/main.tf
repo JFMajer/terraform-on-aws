@@ -1,3 +1,7 @@
+locals {
+    http_port = 80
+}
+
 data "aws_vpc" "default" {
   default = true
 }
@@ -76,7 +80,7 @@ resource "aws_lb" "asg_lb" {
 
 resource "aws_lb_listener" "http" {
     load_balancer_arn = aws_lb.asg_lb.arn
-    port              = "80"
+    port              = local.http_port
     protocol          = "HTTP"
 
     default_action {
@@ -113,8 +117,8 @@ resource "aws_security_group" "asg_lb_sg" {
 
   ingress {
     description = "HTTP"
-    from_port   = 80
-    to_port     = 80
+    from_port   = local.http_port
+    to_port     = local.http_port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     }
