@@ -10,6 +10,7 @@ on:
       - '!**/README.md'
       - '**/asg.yml'
       - '**/destroy.txt'
+      - 'modules/**'
   
 jobs:
   deploy-asg:
