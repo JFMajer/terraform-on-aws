@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "webserver_cluster" {
-    source = "../modules/services/webserver-cluster"
+    source = "github.com/JFMajer/terraform-aws-asg-modules?ref=v0.0.1"
     cluster_name = var.cluster_name
     db_address = module.mysql_rds.address
     db_port = module.mysql_rds.port
