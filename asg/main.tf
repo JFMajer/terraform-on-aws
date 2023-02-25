@@ -14,4 +14,5 @@ module "mysql_rds" {
     rds_suffix = var.rds_suffix
     rds_username = var.rds_username
     rds_password = var.rds_password
+    cluster_name = var.cluster_name
 }
