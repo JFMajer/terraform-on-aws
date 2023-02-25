@@ -12,9 +12,9 @@ resource "aws_db_instance" "rds_mysql" {
 }
 
 
+# Generate random string without any special characters, all lowercase
 resource "random_string" "random" {
-  length           = 6
-  special          = false
-  lower = true
-  override_special = "/@£$"
+    length = 4
+    special = false
+    upper = false
 }
