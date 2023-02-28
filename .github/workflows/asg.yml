@@ -58,7 +58,7 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
         run: terraform plan -out=plan.out
       - name: Terraform Apply
-        if: ${{ !contains(github.event.head_commit.message, 'Destroy') || !github.event.inputs.destruction }}
+        if: ${{ !contains(github.event.head_commit.message, 'Destroy') }} || ${{ github.event.inputs.destruction }}
         working-directory: ${{ env.WORKING_DIR }}
         run: terraform apply plan.out
       - name: Terraform Destroy
