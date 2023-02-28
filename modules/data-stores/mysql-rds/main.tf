@@ -6,6 +6,7 @@ resource "aws_db_instance" "rds_mysql" {
     skip_final_snapshot = true
     db_name = "terraform_db"
     apply_immediately = true
+    db_subnet_group_name = aws_db_subnet_group.rds_mysql.name
 
     username = var.rds_username
     password = var.rds_password
