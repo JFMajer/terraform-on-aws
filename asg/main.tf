@@ -33,7 +33,7 @@ module "mysql_rds" {
 }
 
 module "vpc" {
-  source = "git::github.com/JFMajer/terraform-aws-vpc-module?ref=v0.0."
+  source = "git::github.com/JFMajer/terraform-aws-vpc-module?ref=v0.0.4"
   vpc_cidr = "10.0.0.0/16"
   public_subnets_count = 3
   private_subnets_count = 3
