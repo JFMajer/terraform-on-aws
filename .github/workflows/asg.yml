@@ -64,7 +64,7 @@ jobs:
       - name: Terraform Destroy
         working-directory: ${{ env.WORKING_DIR }}
         run: terraform destroy -auto-approve
-        if: ${{ github.event.inputs.destruction }}
+        if: ${{ github.event.inputs.destruction == 'true' }}
       - name: Terraform Output
         working-directory: ${{ env.WORKING_DIR }}
         run: terraform output -json  
@@ -73,4 +73,4 @@ jobs:
     steps:
       - run: echo "${{ toJSON(github.event) }}"
       - run: echo ${{ github.workspace }}
-        if: ${{ github.event.inputs.destruction }}
+        if: ${{ github.event.inputs.destruction == 'true'}}
