@@ -10,11 +10,14 @@ provider "aws" {
 }
 
 module "webserver_cluster" {
-    source = "git::github.com/JFMajer/terraform-aws-asg-module?ref=v0.1.3"
+    source = "git::github.com/JFMajer/terraform-aws-asg-module?ref=v0.1.4"
     cluster_name = var.cluster_name
     db_address = module.mysql_rds.address
     db_port = module.mysql_rds.port
     server_text = "Hello World!"
+    asg_subnets = module.vpc.private_subnets_ids
+    alb_subnets = module.vpc.public_subnets_ids
+    vpc_id = module.vpc.vpc_id
 
     custom_tags = {
         Owner = "team-foo"
