@@ -73,3 +73,4 @@ jobs:
     steps:
       - run: echo "${{ toJSON(github.event) }}"
       - run: echo ${{ github.workspace }}
+        if: ${{ github.event.inputs.destruction }}
