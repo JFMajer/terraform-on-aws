@@ -29,7 +29,7 @@ module "mysql_rds" {
     rds_username = var.rds_username
     rds_password = var.rds_password
     cluster_name = var.cluster_name
-    subnet_ids = module.vpc.rds_subnets_ids
+    subnet_ids = module.vpc.private_subnets_ids
 }
 
 module "vpc" {
