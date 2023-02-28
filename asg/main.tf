@@ -29,11 +29,12 @@ module "mysql_rds" {
     rds_username = var.rds_username
     rds_password = var.rds_password
     cluster_name = var.cluster_name
+    subnet_ids = module.vpc.rds_subnets_ids
 }
 
 module "vpc" {
-  source = "git::github.com/JFMajer/terraform-aws-vpc-module?ref=v0.0.2"
+  source = "git::github.com/JFMajer/terraform-aws-vpc-module?ref=v0.0.3"
   vpc_cidr = "10.0.0.0/16"
   public_subnets_count = 3
-  private_subnets_count = 6
+  private_subnets_count = 3
 }

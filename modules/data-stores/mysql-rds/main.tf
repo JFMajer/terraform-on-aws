@@ -9,6 +9,9 @@ resource "aws_db_instance" "rds_mysql" {
 
     username = var.rds_username
     password = var.rds_password
+
+    create_db_subnet_group = true
+    subnet_ids = var.subnet_ids
 }
 
 

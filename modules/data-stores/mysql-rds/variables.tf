@@ -19,3 +19,8 @@ variable "cluster_name" {
     description = "Name of the cluster"
     type        = string
 }
+
+variable "subnet_ids" {
+    description = "Subnet IDs to use for the RDS instance"
+    type = list(string)
+}
