@@ -4,9 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       destruction:
+        type: boolean
         description: 'Destroy the ASG?'
         required: false
-        default: 'false'
+        default: false
   push:
     branches:
       - main
@@ -57,13 +58,13 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
         run: terraform plan -out=plan.out
       - name: Terraform Apply
-        if: ${{ !contains(github.event.head_commit.message, 'Destroy') || github.event.inputs.destruction == 'false'}}
+        if: ${{ !contains(github.event.head_commit.message, 'Destroy') || !github.event.inputs.destruction }}
         working-directory: ${{ env.WORKING_DIR }}
         run: terraform apply plan.out
       - name: Terraform Destroy
         working-directory: ${{ env.WORKING_DIR }}
         run: terraform destroy -auto-approve
-        if: ${{ contains(github.event.head_commit.message, 'Destroy') || github.event.inputs.destruction == 'true' }}
+        if: ${{ contains(github.event.head_commit.message, 'Destroy') || github.event.inputs.destruction }}
       - name: Terraform Output
         working-directory: ${{ env.WORKING_DIR }}
         run: terraform output -json  
