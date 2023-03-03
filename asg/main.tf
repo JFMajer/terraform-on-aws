@@ -1,6 +1,8 @@
 provider "aws" {
   region = "#{AWS_REGION}#"
-
+  assume_role {
+    role_arn = "#{AWS_ROLE_TO_ASSUME}#"
+  }
   default_tags {
     tags = {
       Environment = "#{ENV}#"
@@ -9,8 +11,16 @@ provider "aws" {
   }
 }
 
+provider "aws" {
+  alias = "dns"
+  region = "#{AWS_REGION}#"
+  assume_role {
+    role_arn = "#{AWS_ROUTE53_ROLE}#"
+  }
+}
+
 module "webserver_cluster" {
-    source = "git::github.com/JFMajer/terraform-aws-asg-module?ref=v0.1.6"
+    source = "git::github.com/JFMajer/terraform-aws-asg-module?ref=v0.1.7"
     cluster_name = var.cluster_name
     db_address = module.mysql_rds.address
     db_port = module.mysql_rds.port
@@ -41,4 +51,20 @@ module "vpc" {
   vpc_cidr = "10.0.0.0/16"
   public_subnets_count = 3
   private_subnets_count = 3
+}
+
+############################################
+# Create route53 alias record for the ALB
+############################################
+
+resource "aws_route53_record" "alb_domain" {
+  provider = aws.dns
+  zone_id = "#{ROUTE53_ZONE_ID}#"
+  name = "dev-asg"
+  type = "A"
+  alias {
+    name = module.webserver_cluster.alb_dns_name
+    zone_id = module.webserver_cluster.alb_zone_id
+    evaluate_target_health = false
+  }
 }

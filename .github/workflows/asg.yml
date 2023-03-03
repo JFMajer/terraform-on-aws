@@ -51,6 +51,9 @@ jobs:
           ENV: ${{ vars.ENV }}
           RDS_USER: ${{ secrets.RDS_USER }}
           RDS_PASSWORD: ${{ secrets.RDS_PASSWORD }}
+          ROLE_TO_ASSUME: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          AWS_ROUTE53_ROLE: ${{ secrets.AWS_ROUTE53_ROLE }}
+          ROUTE53_ZONE_ID: ${{ secrets.HOSTED_ZONE_ID }}
       - name: Terraform Init
         working-directory: ${{ env.WORKING_DIR }}
         run: terraform init
