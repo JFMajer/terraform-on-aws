@@ -63,7 +63,7 @@ resource "aws_route53_record" "alb_domain" {
   name = "dev-asg"
   type = "A"
   alias {
-    name = module.webserver_cluster.alb_dns_name
+    name = module.webserver_cluster.load_balancer_dns
     zone_id = module.webserver_cluster.alb_zone_id
     evaluate_target_health = false
   }
