@@ -1,5 +1,4 @@
 resource "aws_db_instance" "rds_mysql" {
-    count = var.deploy_rds ? 1 : 0
     identifier = "rds-mysql-${var.cluster_name}-${random_string.random.result}"
     allocated_storage = 20
     engine = "mysql"
