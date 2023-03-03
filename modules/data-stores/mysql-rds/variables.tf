@@ -24,3 +24,9 @@ variable "subnet_ids" {
     description = "Subnet IDs to use for the RDS instance"
     type = list(string)
 }
+
+variable "deploy_rds" {
+    description = "Whether to deploy the RDS instance or not"
+    type = bool
+    default = true
+}

@@ -33,6 +33,7 @@ module "mysql_rds" {
     rds_password = var.rds_password
     cluster_name = var.cluster_name
     subnet_ids = module.vpc.private_subnets_ids
+    deploy_rds = false
 }
 
 module "vpc" {

@@ -1,4 +1,5 @@
 resource "aws_db_instance" "rds_mysql" {
+    count = var.deploy_rds ? 1 : 0
     identifier = "rds-mysql-${var.cluster_name}-${random_string.random.result}"
     allocated_storage = 20
     engine = "mysql"
@@ -22,6 +23,7 @@ resource "random_string" "random" {
 }
 
 resource "aws_db_subnet_group" "rds_mysql" {
+    count = var.deploy_rds ? 1 : 0
     name = "rds-mysql-${var.cluster_name}-subnetgroup"
     subnet_ids = var.subnet_ids
 }
