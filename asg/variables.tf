@@ -29,3 +29,9 @@ variable "custom_tags" {
     type = map(string)
     default = {}
 }
+
+variable "subdomain" {
+    description = "Subdomain for webserver cluster"
+    type = string
+    default = "asg-#{ENV}#"
+}

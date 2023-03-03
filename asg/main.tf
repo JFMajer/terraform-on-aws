@@ -60,7 +60,7 @@ module "vpc" {
 resource "aws_route53_record" "alb_domain" {
   provider = aws.dns
   zone_id = "#{ROUTE53_ZONE_ID}#"
-  name = "dev-asg"
+  name = var.subdomain
   type = "A"
   alias {
     name = module.webserver_cluster.load_balancer_dns
