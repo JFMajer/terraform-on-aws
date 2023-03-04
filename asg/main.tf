@@ -51,6 +51,9 @@ module "mysql_rds" {
 module "mysql_replica" {
     source = "git::github.com/JFMajer/terraform-aws-mysqlrds-module"
     replicate_source_db = module.mysql_rds.arn
+    cluster_name = var.cluster_name
+    subnet_ids = module.vpc.private_subnets_ids
+    rds_suffix = var.rds_suffix
 }
 module "vpc" {
   source = "git::github.com/JFMajer/terraform-aws-vpc-module?ref=v0.0.4"
