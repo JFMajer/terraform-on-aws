@@ -39,12 +39,13 @@ module "webserver_cluster" {
 }
 
 module "mysql_rds" {
-    source = "../modules/data-stores/mysql-rds"
+    source = "git::github.com/JFMajer/terraform-aws-mysqlrds-module"
     rds_suffix = var.rds_suffix
     rds_username = var.rds_username
     rds_password = var.rds_password
     cluster_name = var.cluster_name
     subnet_ids = module.vpc.private_subnets_ids
+    db_name = "terraform-db"
 }
 
 module "vpc" {
@@ -54,9 +55,9 @@ module "vpc" {
   private_subnets_count = 2
 }
 
-############################################|
-# Create route53 alias record for the ALB   |
-############################################|
+############################################
+# Create route53 alias record for the ALB  #
+############################################
 
 resource "aws_route53_record" "alb_domain" {
   provider = aws.dns
@@ -70,18 +71,18 @@ resource "aws_route53_record" "alb_domain" {
   }
 }
 
-############################################|
-# Create SSL Certificate for the domain     |
-############################################|
+############################################
+# Create SSL Certificate for the domain    #
+############################################
 
 resource "aws_acm_certificate" "alb_cert" {
   domain_name = join(".", [var.subdomain, "heheszlo.com"])
   validation_method = "DNS"
 }
 
-############################################|
-# Validate ACM Certificate                  |
-############################################|
+############################################
+# Validate ACM Certificate                 #
+############################################
 
 resource "aws_route53_record" "alb_cert_validation" {
   provider = aws.dns
