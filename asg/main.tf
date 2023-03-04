@@ -46,6 +46,7 @@ module "mysql_rds" {
     cluster_name = var.cluster_name
     subnet_group_name = module.vpc.rds_subnet_group_name
     db_name = "terraformdb"
+    backup_retention_period = 1
 }
 
 module "mysql_replica" {
