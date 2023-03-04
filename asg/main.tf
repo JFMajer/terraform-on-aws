@@ -44,7 +44,7 @@ module "mysql_rds" {
     rds_username = var.rds_username
     rds_password = var.rds_password
     cluster_name = var.cluster_name
-    subnet_group_name = module.vpc.subnet_group_name
+    subnet_group_name = module.vpc.rds_subnet_group_name
     db_name = "terraformdb"
 }
 
@@ -52,7 +52,7 @@ module "mysql_replica" {
     source = "git::github.com/JFMajer/terraform-aws-mysqlrds-module"
     replicate_source_db = module.mysql_rds.arn
     cluster_name = var.cluster_name
-    subnet_group_name = module.vpc.subnet_group_name
+    subnet_group_name = module.vpc.rds_subnet_group_name
     rds_suffix = var.rds_suffix
 }
 module "vpc" {
