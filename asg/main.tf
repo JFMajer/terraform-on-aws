@@ -82,12 +82,17 @@ resource "aws_acm_certificate" "alb_cert" {
 # Validate ACM Certificate                  |
 ############################################|
 
-resource "aws_acm_certificate_validation" "validate" {
+resource "aws_route53_record" "alb_cert_validation" {
   provider = aws.dns
+  name = aws_acm_certificate.alb_cert.domain_validation_options.0.resource_record_name
+  type = aws_acm_certificate.alb_cert.domain_validation_options.0.resource_record_type
+  zone_id = "#{ROUTE53_ZONE_ID}#"
+  records = [aws_acm_certificate.alb_cert.domain_validation_options.0.resource_record_value]
+  ttl = 60
+}
+
+resource "aws_acm_certificate_validation" "alb_cert_validation" {
   certificate_arn = aws_acm_certificate.alb_cert.arn
-  validation_record_fqdns = [
-    for record in aws_route53_record.alb_domain :
-    record.fqdn
-  ]
+  validation_record_fqdns = [aws_route53_record.alb_cert_validation.fqdn]
 }
 
