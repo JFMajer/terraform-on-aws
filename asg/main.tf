@@ -84,10 +84,18 @@ resource "aws_acm_certificate" "alb_cert" {
 
 resource "aws_route53_record" "alb_cert_validation" {
   provider = aws.dns
-  name = aws_acm_certificate.alb_cert.domain_validation_options.0.resource_record_name
-  type = aws_acm_certificate.alb_cert.domain_validation_options.0.resource_record_type
+  for_each = {
+    for dvo in aws_acm_certificate.alb_cert : dvo.domain_name => {
+      name = dvo.resource_record_name
+      type = dvo.resource_record_type
+      value = dvo.resource_record_value
+    }
+  }
+  allow_overwrite = true
+  type = each.value.type
   zone_id = "#{ROUTE53_ZONE_ID}#"
-  records = [aws_acm_certificate.alb_cert.domain_validation_options.0.resource_record_value]
+  name = each.value.name
+  records = [each.value.record]
   ttl = 60
 }
 
