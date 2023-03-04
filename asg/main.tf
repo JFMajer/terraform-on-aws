@@ -49,13 +49,13 @@ module "mysql_rds" {
 module "vpc" {
   source = "git::github.com/JFMajer/terraform-aws-vpc-module?ref=v0.0.4"
   vpc_cidr = "10.0.0.0/16"
-  public_subnets_count = 3
-  private_subnets_count = 3
+  public_subnets_count = 2
+  private_subnets_count = 2
 }
 
-############################################
-# Create route53 alias record for the ALB
-############################################
+############################################|
+# Create route53 alias record for the ALB   |
+############################################|
 
 resource "aws_route53_record" "alb_domain" {
   provider = aws.dns
@@ -68,3 +68,26 @@ resource "aws_route53_record" "alb_domain" {
     evaluate_target_health = false
   }
 }
+
+############################################|
+# Create SSL Certificate for the domain     |
+############################################|
+
+resource "aws_acm_certificate" "alb_cert" {
+  domain_name = join(".", [var.subdomain, "heheszlo.com"])
+  validation_method = "DNS"
+}
+
+############################################|
+# Validate ACM Certificate                  |
+############################################|
+
+resource "aws_acm_certificate_validation" "validate" {
+  provider = aws.dns
+  certificate_arn = aws_acm_certificate.alb_cert.arn
+  validation_record_fqdns = [
+    for record in aws_route53_record.alb_domain :
+    record.fqdn
+  ]
+}
+
