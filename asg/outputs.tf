@@ -13,3 +13,11 @@ output "fqdn_r53" {
 output "fqdn_r53_https" {
     value = "https://${aws_route53_record.alb_domain.name}.heheszlo.com"
 }
+
+output primary_db_endpoint {
+    value = module.mysql_rds.address
+}
+
+output replica_db_endpoint {
+    value = module.mysql_replica.address
+}
