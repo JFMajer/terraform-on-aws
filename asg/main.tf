@@ -45,9 +45,13 @@ module "mysql_rds" {
     rds_password = var.rds_password
     cluster_name = var.cluster_name
     subnet_ids = module.vpc.private_subnets_ids
-    db_name = "terraform-db"
+    db_name = "terraformdb"
 }
 
+module "mysql_replica" {
+    source = "git::github.com/JFMajer/terraform-aws-mysqlrds-module"
+    replicate_source_db = module.mysql_rds.arn
+}
 module "vpc" {
   source = "git::github.com/JFMajer/terraform-aws-vpc-module?ref=v0.0.4"
   vpc_cidr = "10.0.0.0/16"
