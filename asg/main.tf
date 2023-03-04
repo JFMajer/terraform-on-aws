@@ -20,7 +20,7 @@ provider "aws" {
 }
 
 module "webserver_cluster" {
-    source = "git::github.com/JFMajer/terraform-aws-asg-module?ref=v0.1.7"
+    source = "git::github.com/JFMajer/terraform-aws-asg-module?ref=v0.1.9"
     cluster_name = var.cluster_name
     db_address = module.mysql_rds.address
     db_port = module.mysql_rds.port
@@ -29,6 +29,7 @@ module "webserver_cluster" {
     alb_subnets = module.vpc.public_subnets_ids
     vpc_id = module.vpc.vpc_id
     scale_in_at_night = true
+    certificate_arn = aws_acm_certificate.alb_cert.arn
 
     custom_tags = {
         Owner = "team-foo"
