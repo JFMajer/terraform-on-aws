@@ -43,8 +43,7 @@ module "mysql_rds" {
     rds_password = var.rds_password
     cluster_name = var.cluster_name
     subnet_group_name = module.vpc.rds_subnet_group_name
-    vpc_id = module.vpc.vpc_id
-    security_group_id = module.webserver_cluster.asg_security_group_id
+    security_group_id = module.webserver_cluster.rds_security_group_id
     db_name = "terraformdb"
     backup_retention_period = 1
 }
@@ -54,8 +53,7 @@ module "mysql_replica" {
     replicate_source_db = module.mysql_rds.arn
     cluster_name = var.cluster_name
     subnet_group_name = module.vpc.rds_subnet_group_name
-    vpc_id = module.vpc.vpc_id
-    security_group_id = module.webserver_cluster.asg_security_group_id
+    security_group_id = module.webserver_cluster.rds_security_group_id
     rds_suffix = var.rds_suffix
 }
 module "vpc" {
