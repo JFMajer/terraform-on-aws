@@ -11,5 +11,5 @@ output "fqdn_r53" {
 }
 
 output "fqdn_r53_https" {
-    value = "http://${aws_route53_record.alb_domain.name}.heheszlo.com"
+    value = "https://${aws_route53_record.alb_domain.name}.heheszlo.com"
 }
