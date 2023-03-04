@@ -54,6 +54,8 @@ module "mysql_replica" {
     replicate_source_db = module.mysql_rds.arn
     cluster_name = var.cluster_name
     subnet_group_name = module.vpc.rds_subnet_group_name
+    vpc_id = module.vpc.vpc_id
+    security_group_id = module.webserver_cluster.asg_security_group_id
     rds_suffix = var.rds_suffix
 }
 module "vpc" {
