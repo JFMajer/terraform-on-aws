@@ -6,10 +6,10 @@ output "load_balancer_url" {
     value = module.webserver_cluster.http_url
 }
 
-output "load_balancer_https_url" {
-    value = module.webserver_cluster.https_url
+output "fqdn_r53" {
+    value = "http://${aws_route53_record.alb_domain.name}.heheszlo.com"
 }
 
-output "fqdn_r53" {
+output "fqdn_r53_https" {
     value = "http://${aws_route53_record.alb_domain.name}.heheszlo.com"
 }
