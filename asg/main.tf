@@ -61,14 +61,17 @@ module "mysql_rds" {
     backup_retention_period = 1
 }
 
-module "mysql_replica" {
-    source = "git::github.com/JFMajer/terraform-aws-mysqlrds-module"
-    replicate_source_db = module.mysql_rds.arn
-    cluster_name = "${var.cluster_name}-replica"
-    subnet_group_name = module.vpc.rds_subnet_group_name
-    security_group_id = module.webserver_cluster.rds_security_group_id
-    rds_suffix = var.rds_suffix
-}
+# module "mysql_replica" {
+#     source = "git::github.com/JFMajer/terraform-aws-mysqlrds-module"
+#     replicate_source_db = module.mysql_rds.arn
+#     cluster_name = "${var.cluster_name}-replica"
+#     subnet_group_name = module.vpc.rds_subnet_group_name
+#     security_group_id = module.webserver_cluster.rds_security_group_id
+#     rds_suffix = var.rds_suffix
+#     depends_on = [
+#         module.mysql_rds
+#     ]
+# }
 module "vpc" {
   source = "git::github.com/JFMajer/terraform-aws-vpc-module"
   vpc_cidr = "10.0.0.0/16"
