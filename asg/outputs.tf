@@ -18,6 +18,6 @@ output primary_db_endpoint {
     value = module.mysql_rds.address
 }
 
-output replica_db_endpoint {
-    value = module.mysql_replica.address
-}
+# output replica_db_endpoint {
+#     value = module.mysql_replica.address
+# }
