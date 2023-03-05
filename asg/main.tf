@@ -22,7 +22,7 @@ provider "aws" {
 module "webserver_cluster" {
     source = "git::github.com/JFMajer/terraform-aws-asg-module?ref=v0.0.1"
     cluster_name = var.cluster_name
-    server_text = "Testing lifecycle"
+    server_text = "hello, world!"
     asg_subnets = module.vpc.private_subnets_ids
     vpc_id = module.vpc.vpc_id
     scale_in_at_night = true
