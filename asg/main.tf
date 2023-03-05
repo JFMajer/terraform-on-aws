@@ -24,11 +24,24 @@ module "webserver_cluster" {
     cluster_name = var.cluster_name
     server_text = "Testing lifecycle"
     asg_subnets = module.vpc.private_subnets_ids
-    alb_subnets = module.vpc.public_subnets_ids
     vpc_id = module.vpc.vpc_id
     scale_in_at_night = true
-    certificate_arn = aws_acm_certificate.alb_cert.arn
+    alb_sg_id = module.alb.alb_security_group_id
+    target_group_arn = module.alb.target_group_arn
 
+    custom_tags = {
+        Owner = "team-foo"
+        Environment = "#{ENV}#"
+        ManagedBy = "terraform"
+    }
+}
+
+module "alb" {
+    source = "git::github.com/JFMajer/terraform-aws-alb-module"
+    cluster_name = var.cluster_name
+    alb_subnets = module.vpc.public_subnets_ids
+    vpc_id = module.vpc.vpc_id
+    certificate_arn = aws_acm_certificate.alb_cert.arn
     custom_tags = {
         Owner = "team-foo"
         Environment = "#{ENV}#"
