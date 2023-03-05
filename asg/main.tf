@@ -64,7 +64,7 @@ module "mysql_rds" {
 module "mysql_replica" {
     source = "git::github.com/JFMajer/terraform-aws-mysqlrds-module"
     replicate_source_db = module.mysql_rds.arn
-    cluster_name = var.cluster_name
+    cluster_name = "${var.cluster_name}-replica"
     subnet_group_name = module.vpc.rds_subnet_group_name
     security_group_id = module.webserver_cluster.rds_security_group_id
     rds_suffix = var.rds_suffix
