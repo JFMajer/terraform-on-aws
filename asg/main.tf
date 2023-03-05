@@ -86,8 +86,8 @@ resource "aws_route53_record" "alb_domain" {
   name = var.subdomain
   type = "A"
   alias {
-    name = module.webserver_cluster.load_balancer_dns
-    zone_id = module.webserver_cluster.alb_zone_id
+    name = module.alb.load_balancer_dns
+    zone_id = module.alb.alb_zone_id
     evaluate_target_health = false
   }
 }
