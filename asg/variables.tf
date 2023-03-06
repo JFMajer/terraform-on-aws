@@ -1,7 +1,7 @@
 variable "cluster_name" {
     description = "Name of the cluster"
     type        = string
-    default = "webserver-cluster-#{ENV}#"
+    default = "app1-cluster-#{ENV}#"
 }
 
 variable "rds_suffix" {
