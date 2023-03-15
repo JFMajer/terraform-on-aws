@@ -1,5 +1,13 @@
+############################################
+# This workflow will deploy an ASG with ALB
+############################################
+
 name: Deploy ASG with ALB
 
+
+############################################
+# Specifies when the workflow will run
+############################################     
 on:
   workflow_dispatch:
     inputs:
